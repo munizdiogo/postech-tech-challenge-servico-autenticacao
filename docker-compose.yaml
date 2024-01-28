@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  webserver:
+  autenticacao:
     build: .
-    container_name: "SERVIDOR-WEB"
+    container_name: "SERVICO-AUTENTICACAO"
     restart: always
     ports:
       - 80:80
