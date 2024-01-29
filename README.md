@@ -1,4 +1,4 @@
-# Tech Challenge - Sistema de Lanchonete
+# Tech Challenge FASE 4 - Sistema de Lanchonete
 
 Esta documentação tem o intuito de orientar sobre a configuração e utilização correta do sistema de lanchonete.
 
