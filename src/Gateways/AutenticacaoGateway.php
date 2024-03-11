@@ -14,7 +14,7 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://s901dmj5n4.execute-api.us-east-1.amazonaws.com/login',
+            CURLOPT_URL => 'https://vt1gpa2752.execute-api.us-east-1.amazonaws.com/login',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -43,7 +43,7 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://s901dmj5n4.execute-api.us-east-1.amazonaws.com/criar-usuario',
+            CURLOPT_URL => 'https://vt1gpa2752.execute-api.us-east-1.amazonaws.com/criar-usuario',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
