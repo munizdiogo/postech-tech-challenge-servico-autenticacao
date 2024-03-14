@@ -9,12 +9,14 @@ use Autenticacao\Interfaces\Gateways\AutenticacaoGatewayInterface;
 class AutenticacaoGateway implements AutenticacaoGatewayInterface
 {
 
+    private $urlAws = "https://iut6byhlui.execute-api.us-east-1.amazonaws.com";
+
     public function gerarToken($cpf)
     {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://vt1gpa2752.execute-api.us-east-1.amazonaws.com/login',
+            CURLOPT_URL => "{$this->urlAws}/login",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -43,7 +45,7 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://vt1gpa2752.execute-api.us-east-1.amazonaws.com/criar-usuario',
+            CURLOPT_URL => "{$this->urlAws}/criar-usuario",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
