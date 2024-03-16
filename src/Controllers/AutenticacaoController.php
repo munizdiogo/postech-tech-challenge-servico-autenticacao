@@ -5,6 +5,7 @@ namespace Autenticacao\Controllers;
 require "./src/Interfaces/Controllers/AutenticacaoControllerInterface.php";
 require "./src/UseCases/AutenticacaoUseCases.php";
 
+use Autenticacao\Gateways\AutenticacaoGateway;
 use Autenticacao\Interfaces\Controllers\AutenticacaoControllerInterface;
 use Autenticacao\UseCases\AutenticacaoUseCases;
 
@@ -25,5 +26,13 @@ class AutenticacaoController implements AutenticacaoControllerInterface
     {
         $token = $this->autenticacaoUseCases->criarContaCognito($cpf, $nome, $email);
         return $token;
+    }
+
+    function criarContaBancoDeDados($dbConnection, $cpf, $nome, $email)
+    {
+        $autenticacaoGateway = new AutenticacaoGateway($dbConnection);
+        $autenticacaoUseCases = new AutenticacaoUseCases();
+        $resultado = $autenticacaoUseCases->criarContaBancoDeDados($autenticacaoGateway, $cpf, $nome, $email);
+        return $resultado;
     }
 }

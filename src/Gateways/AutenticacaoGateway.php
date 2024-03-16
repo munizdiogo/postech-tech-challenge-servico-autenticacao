@@ -4,10 +4,17 @@ namespace Autenticacao\Gateways;
 
 require "./src/Interfaces/Gateways/AutenticacaoGatewayInterface.php";
 
+use Autenticacao\Interfaces\DbConnection\DbConnectionInterface;
 use Autenticacao\Interfaces\Gateways\AutenticacaoGatewayInterface;
 
 class AutenticacaoGateway implements AutenticacaoGatewayInterface
 {
+    private $repositorioDados;
+
+    public function __construct(DbConnectionInterface $database = null)
+    {
+        $this->repositorioDados = $database;
+    }
 
     public function gerarToken($cpf)
     {
@@ -66,5 +73,30 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         curl_close($curl);
         http_response_code(200);
         return $response;
+    }
+
+    public function criarContaBancoDeDados($cpf, $nome, $email)
+    {
+        $cpf = str_replace([".", "-"], "", $cpf);
+        $clienteJaCadastrado = $this->repositorioDados->buscarPorCpf("clientes", $cpf);
+
+        if (!empty($clienteJaCadastrado)) {
+            return true;
+        }
+
+        $dadosParaCriarConta = [
+            "data_criacao" => date('Y-m-d h:i:s'),
+            "cpf" => $cpf,
+            "nome" => $nome,
+            "email" => $email,
+        ];
+
+        $idCliente = $this->repositorioDados->inserir("clientes", $dadosParaCriarConta);
+
+        if (empty($idCliente)) {
+            return false;
+        }
+
+        return true;
     }
 }
