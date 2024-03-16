@@ -32,6 +32,28 @@ class AutenticacaoUseCases implements AutenticacaoUseCasesInterface
         $resultado = $this->autenticacaoGateway->gerarToken($cpf);
         return $resultado;
     }
+
+    public function criarContaBancoDeDados(AutenticacaoGateway $autenticacaoGateway, $cpf, $nome, $email)
+    {
+        if (empty($cpf)) {
+            throw new \Exception("O CPF é obrigatório.", 400);
+        }
+
+        if (empty($nome)) {
+            throw new \Exception("O nome é obrigatório.", 400);
+        }
+
+        if (empty($email)) {
+            throw new \Exception("O email é obrigatório.", 400);
+        }
+
+        $criarContaBancoDeDados = $autenticacaoGateway->criarContaBancoDeDados($cpf, $nome, $email);
+
+        if (!$criarContaBancoDeDados) {
+            throw new \Exception("Ocorreu um erro ao salvar registro no banco de dados.", 500);
+        }
+    }
+
     public function criarContaCognito($cpf, $nome, $email)
     {
         if (empty($cpf)) {
@@ -59,6 +81,12 @@ class AutenticacaoUseCases implements AutenticacaoUseCasesInterface
         }
 
         $resultado = $this->autenticacaoGateway->criarContaCognito($cpf, $nome, $email);
-        return $resultado;
+        $resultadoArray = json_decode($resultado, true);
+
+        if (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso") {
+            return true;
+        } else {
+            throw new \Exception("Ocorreu um erro ao criar conta no Cognito.", 400);
+        }
     }
 }

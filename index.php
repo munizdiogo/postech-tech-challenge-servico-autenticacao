@@ -3,10 +3,13 @@
 header('Content-Type: application/json; charset=utf-8');
 
 require "./utils/RespostasJson.php";
+require "./src/External/MySqlConnection.php";
 require "./src/Controllers/AutenticacaoController.php";
 
+use Autenticacao\External\MySqlConnection;
 use Autenticacao\Controllers\AutenticacaoController;
 
+$dbConnection = new MySqlConnection();
 $autenticacaoController = new AutenticacaoController();
 
 if (!empty($_GET["acao"])) {
@@ -24,8 +27,8 @@ if (!empty($_GET["acao"])) {
                 $cpf = $_POST['cpf'] ?? '';
                 $nome = $_POST['nome'] ?? '';
                 $email = $_POST['email'] ?? '';
-                $resultado = $autenticacaoController->criarContaCognito($cpf, $nome, $email);
-                echo $resultado;
+                $autenticacaoController->criarContaBancoDeDados($dbConnection, $cpf, $nome, $email);
+                $autenticacaoController->criarContaCognito($cpf, $nome, $email);
             } catch (\Exception $e) {
                 retornarRespostaJSON($e->getMessage(), $e->getCode());
             }
