@@ -6,4 +6,5 @@ interface AutenticacaoControllerInterface
 {
     public function gerarToken($cpf);
     public function criarContaCognito($cpf, $nome, $email);
+    public function inativarContaCognito($cpf);
 }

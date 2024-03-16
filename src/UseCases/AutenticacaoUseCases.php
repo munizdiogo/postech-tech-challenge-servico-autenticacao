@@ -61,4 +61,20 @@ class AutenticacaoUseCases implements AutenticacaoUseCasesInterface
         $resultado = $this->autenticacaoGateway->criarContaCognito($cpf, $nome, $email);
         return $resultado;
     }
+    public function inativarContaCognito($cpf)
+    {
+        if (empty($cpf)) {
+            throw new \Exception("O CPF é obrigatório.", 400);
+        }
+
+        $cpfValido = validarCPF($cpf);
+
+        if (!$cpfValido) {
+            throw new \Exception("O CPF informado é inválido.", 400);
+        }
+
+
+        $resultado = $this->autenticacaoGateway->inativarContaCognito($cpf);
+        return $resultado;
+    }
 }

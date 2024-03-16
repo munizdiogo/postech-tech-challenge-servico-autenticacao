@@ -70,12 +70,12 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         return $response;
     }
 
-    public function inativarContaCognito($cpf, $nome, $email)
+    public function inativarContaCognito($cpf)
     {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "{$this->urlAws}/criar-usuario",
+            CURLOPT_URL => "{$this->urlAws}/excluir-usuario",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -84,8 +84,6 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
-                        "email": "' . $email . '",
-                        "name": "' . $nome . '",
                         "cpf": "' . $cpf . '"
                     }',
             CURLOPT_HTTPHEADER => array(

@@ -26,4 +26,10 @@ class AutenticacaoController implements AutenticacaoControllerInterface
         $token = $this->autenticacaoUseCases->criarContaCognito($cpf, $nome, $email);
         return $token;
     }
+
+    function inativarContaCognito($cpf)
+    {
+        $token = $this->autenticacaoUseCases->inativarContaCognito($cpf);
+        return $token;
+    }
 }
