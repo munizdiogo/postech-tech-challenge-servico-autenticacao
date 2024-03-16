@@ -69,4 +69,34 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         http_response_code(200);
         return $response;
     }
+
+    public function inativarContaCognito($cpf, $nome, $email)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "{$this->urlAws}/criar-usuario",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+                        "email": "' . $email . '",
+                        "name": "' . $nome . '",
+                        "cpf": "' . $cpf . '"
+                    }',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        http_response_code(200);
+        return $response;
+    }
 }
