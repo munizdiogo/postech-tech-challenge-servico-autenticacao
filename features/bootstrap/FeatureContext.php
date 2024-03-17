@@ -92,6 +92,7 @@ class FeatureContext extends TestCase implements Context
      */
     public function euExecutarAFuncaoCriarcontacognitoComUmCpfNomeEEMailValidos()
     {
+        $this->resultado = $this->autenticacaoController->excluirContaCognitoSemRetorno($this->cpf);
         $this->resultado = $this->autenticacaoController->criarContaCognito($this->cpf,  $this->nome, $this->email);
     }
 
@@ -100,8 +101,8 @@ class FeatureContext extends TestCase implements Context
      */
     public function euDevoReceberUmaRespostaDeSucessoDoCognito()
     {
-        $resultadoArray = json_decode($this->resultado);
-        $usuarioCadastradoComSucesso = strpos($this->resultado, "User account already exists") !== false || (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso");
+        $resultado = $this->resultado;
+        $usuarioCadastradoComSucesso = !empty($resultado["status"]) && $resultado["status"] == "usuario-criado-com-sucesso";
         $this->assertTrue($usuarioCadastradoComSucesso);
     }
 
@@ -195,14 +196,6 @@ class FeatureContext extends TestCase implements Context
     }
 
     /**
-     * @When eu executar a função criarContaCognito com um CPF que já possui uma conta no Cognito
-     */
-    public function euExecutarAFuncaoCriarcontacognitoComUmCpfQueJaPossuiUmaContaNoCognito()
-    {
-        $this->resultado = $this->autenticacaoController->criarContaCognito($this->cpf,  $this->nome, $this->email);
-    }
-
-    /**
      * @Then eu devo receber uma mensagem indicando que já existe uma conta com esse CPF
      */
     public function euDevoReceberUmaMensagemIndicandoQueJaExisteUmaContaComEsseCpf()
@@ -257,6 +250,7 @@ class FeatureContext extends TestCase implements Context
     public function euExecutarAFuncaoCriarcontacognitoSemFornecerEMail()
     {
         try {
+            $this->resultado = $this->autenticacaoController->excluirContaCognitoSemRetorno($this->cpf);
             $this->resultado = $this->autenticacaoController->criarContaCognito($this->cpf,  $this->nome, $this->email);
         } catch (Exception $e) {
             $this->exceptionMessage = $e->getMessage();

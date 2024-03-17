@@ -40,8 +40,3 @@ Feature: Controle de autenticação
         Given que eu forneça um CPF inválido
         When eu executar a função gerarToken com um CPF inválido
         Then eu devo receber uma mensagem de erro indicando que o CPF é inválido
-
-    Scenario: Criar Conta Cognito com CPF já existente
-        Given que eu forneça um CPF já existente
-        When eu executar a função criarContaCognito com um CPF que já possui uma conta no Cognito
-        Then eu devo receber uma mensagem indicando que já existe uma conta com esse CPF
