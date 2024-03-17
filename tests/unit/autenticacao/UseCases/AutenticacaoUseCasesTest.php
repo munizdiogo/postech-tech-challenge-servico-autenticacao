@@ -5,14 +5,16 @@ use Autenticacao\UseCases\AutenticacaoUseCases;
 
 class AutenticacaoUseCasesTest extends TestCase
 {
+    private $cpf;
     private $autenticacaoUseCases;
     protected function setUp(): void
     {
         $this->autenticacaoUseCases = new AutenticacaoUseCases();
+        $this->cpf = "59162298011";
     }
     public function testGerarTokenComSucesso()
     {
-        $resultado = $this->autenticacaoUseCases->gerarToken('59162298011');
+        $resultado = $this->autenticacaoUseCases->gerarToken($this->cpf);
         $this->assertIsString($resultado);
         $this->assertNotEmpty($resultado);
     }
@@ -37,7 +39,7 @@ class AutenticacaoUseCasesTest extends TestCase
 
     public function testCriarContaCognitoComSucesso()
     {
-        $resultado = $this->autenticacaoUseCases->criarContaCognito('59162298011', 'Carmo', 'rodrigocarmodev@gmail.com');
+        $resultado = $this->autenticacaoUseCases->criarContaCognito($this->cpf, 'Carmo', 'rodrigocarmodev@gmail.com');
         $resultadoArray = json_decode($resultado);
         $usuarioCadastradoComSucesso = strpos($resultado, "User account already exists") || (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso");
         $this->assertTrue($usuarioCadastradoComSucesso);
@@ -54,7 +56,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComNomeNaoInformado()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('59162298011', '', 'rodrigocarmodev@gmail.com');
+            $this->autenticacaoUseCases->criarContaCognito($this->cpf, '', 'rodrigocarmodev@gmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O nome é obrigatório.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
@@ -63,7 +65,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComEmailNaoInformado()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('59162298011', 'Carmo', '');
+            $this->autenticacaoUseCases->criarContaCognito($this->cpf, 'Carmo', '');
         } catch (Exception $e) {
             $this->assertEquals("O email é obrigatório.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
@@ -81,7 +83,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComEmailInvalido()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('59162298011', 'Carmo', 'rodrigocarmodevgmail.com');
+            $this->autenticacaoUseCases->criarContaCognito($this->cpf, 'Carmo', 'rodrigocarmodevgmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O email informado é inválido.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
