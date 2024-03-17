@@ -24,11 +24,27 @@ if (!empty($_GET["acao"])) {
             break;
         case 'criarConta':
             try {
+                $dados = [
+                    "cpf" => $_POST['cpf'] ?? '',
+                    "nome" => $_POST['nome'] ?? '',
+                    "email" =>  $_POST['email'] ?? '',
+                    "telefone" => $_POST['telefone'] ?? '',
+                    "endereco" =>  $_POST['endereco'] ?? ''
+                ];
+                $autenticacaoController->criarContaBancoDeDados($dbConnection, $dados);
+                $autenticacaoController->criarContaCognito($dados["cpf"], $dados["nome"], $dados["email"]);
+                retornarRespostaJSON("Conta criada com sucesso!", 201);
+            } catch (\Exception $e) {
+                retornarRespostaJSON($e->getMessage(), $e->getCode());
+            }
+            break;
+
+        case 'excluirConta':
+            try {
                 $cpf = $_POST['cpf'] ?? '';
-                $nome = $_POST['nome'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $autenticacaoController->criarContaBancoDeDados($dbConnection, $cpf, $nome, $email);
-                $autenticacaoController->criarContaCognito($cpf, $nome, $email);
+                $autenticacaoController->excluirContaCognito($cpf);
+                $autenticacaoController->excluirContaBancoDeDados($dbConnection, $cpf);
+                retornarRespostaJSON("Conta excluída com sucesso!", 200);
             } catch (\Exception $e) {
                 retornarRespostaJSON($e->getMessage(), $e->getCode());
             }

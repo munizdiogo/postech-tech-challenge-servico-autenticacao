@@ -28,11 +28,25 @@ class AutenticacaoController implements AutenticacaoControllerInterface
         return $token;
     }
 
-    function criarContaBancoDeDados($dbConnection, $cpf, $nome, $email)
+    function excluirContaCognito($cpf)
+    {
+        $token = $this->autenticacaoUseCases->excluirContaCognito($cpf);
+        return $token;
+    }
+
+    function criarContaBancoDeDados($dbConnection, $dados)
     {
         $autenticacaoGateway = new AutenticacaoGateway($dbConnection);
         $autenticacaoUseCases = new AutenticacaoUseCases();
-        $resultado = $autenticacaoUseCases->criarContaBancoDeDados($autenticacaoGateway, $cpf, $nome, $email);
+        $resultado = $autenticacaoUseCases->criarContaBancoDeDados($autenticacaoGateway, $dados);
+        return $resultado;
+    }
+
+    function excluirContaBancoDeDados($dbConnection, $cpf)
+    {
+        $autenticacaoGateway = new AutenticacaoGateway($dbConnection);
+        $autenticacaoUseCases = new AutenticacaoUseCases();
+        $resultado = $autenticacaoUseCases->excluirContaBancoDeDados($autenticacaoGateway, $cpf);
         return $resultado;
     }
 }
