@@ -44,6 +44,37 @@ class MySqlConnection implements DbConnectionInterface
         }
     }
 
+    public function excluir(string $nomeTabela, array $parametros)
+    {
+        $db = $this->conectar();
+        $cpfDesejado = $parametros["cpfCliente"];
+        unset($parametros["cpfCliente"]);
+        $nomesCampos = "";
+
+        foreach ($parametros as $chave => $valor) {
+            $nomesCampos .= "$chave = :$chave,";
+        }
+
+        $nomesCampos = substr($nomesCampos, 0, -1);
+
+        $query = "UPDATE $nomeTabela SET data_alteracao = NOW(), $nomesCampos WHERE cpf = :cpfDesejado";
+
+        $stmt = $db->prepare($query);
+
+        $stmt->bindValue(":cpfDesejado", $cpfDesejado);
+
+        foreach ($parametros as $chave => $valor) {
+            $stmt->bindValue(":$chave", $valor);
+        }
+
+        try {
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
     public function buscarPorCpf(string $nomeTabela, $cpf): array
     {
         $db = $this->conectar();
