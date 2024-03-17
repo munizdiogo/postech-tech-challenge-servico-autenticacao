@@ -12,7 +12,7 @@ class AutenticacaoUseCasesTest extends TestCase
     }
     public function testGerarTokenComSucesso()
     {
-        $resultado = $this->autenticacaoUseCases->gerarToken('42157363823');
+        $resultado = $this->autenticacaoUseCases->gerarToken('59162298011');
         $this->assertIsString($resultado);
         $this->assertNotEmpty($resultado);
     }
@@ -37,7 +37,7 @@ class AutenticacaoUseCasesTest extends TestCase
 
     public function testCriarContaCognitoComSucesso()
     {
-        $resultado = $this->autenticacaoUseCases->criarContaCognito('42157363823', 'Carmo', 'rodrigocarmodev@gmail.com');
+        $resultado = $this->autenticacaoUseCases->criarContaCognito('59162298011', 'Carmo', 'rodrigocarmodev@gmail.com');
         $resultadoArray = json_decode($resultado);
         $usuarioCadastradoComSucesso = strpos($resultado, "User account already exists") || (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso");
         $this->assertTrue($usuarioCadastradoComSucesso);
@@ -54,7 +54,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComNomeNaoInformado()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('42157363823', '', 'rodrigocarmodev@gmail.com');
+            $this->autenticacaoUseCases->criarContaCognito('59162298011', '', 'rodrigocarmodev@gmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O nome é obrigatório.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
@@ -63,7 +63,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComEmailNaoInformado()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('42157363823', 'Carmo', '');
+            $this->autenticacaoUseCases->criarContaCognito('59162298011', 'Carmo', '');
         } catch (Exception $e) {
             $this->assertEquals("O email é obrigatório.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
@@ -81,7 +81,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComEmailInvalido()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('42157363823', 'Carmo', 'rodrigocarmodevgmail.com');
+            $this->autenticacaoUseCases->criarContaCognito('59162298011', 'Carmo', 'rodrigocarmodevgmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O email informado é inválido.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
