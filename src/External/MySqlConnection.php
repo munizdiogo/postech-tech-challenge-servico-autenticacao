@@ -2,8 +2,8 @@
 
 namespace Autenticacao\External;
 
-require "./config.php";
-require "./src/Interfaces/DbConnection/DbConnectionInterface.php";
+require "../../config.php";
+require "../Interfaces/DbConnection/DbConnectionInterface.php";
 
 use Autenticacao\Interfaces\DbConnection\DbConnectionInterface;
 use \PDO;
@@ -11,12 +11,12 @@ use \PDOException;
 
 class MySqlConnection implements DbConnectionInterface
 {
-    public function conectar()
+    public function conectar($nomeTabela = DB_NAME)
     {
         $conn = null;
 
         try {
-            $conn = new PDO("mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME, DB_USERNAME, DB_PASSWORD);
+            $conn = new PDO("mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . $nomeTabela, DB_USERNAME, DB_PASSWORD);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo "Erro na conexão com o banco de dados: " . $e->getMessage();
@@ -46,7 +46,7 @@ class MySqlConnection implements DbConnectionInterface
 
     public function excluir(string $nomeTabela, array $parametros)
     {
-        $db = $this->conectar();
+        $db = $this->conectar($nomeTabela);
         $cpfDesejado = $parametros["cpfCliente"];
         unset($parametros["cpfCliente"]);
         $nomesCampos = "";

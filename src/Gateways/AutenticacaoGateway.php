@@ -160,7 +160,7 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
             "cpfCliente" => $cpf,
         ];
 
-        $exclusaoTabelaPedidos = $this->repositorioDados->excluir("pedidos", $camposEValores);
+        $exclusaoTabelaPedidos = $this->repositorioDados->excluir(DB_NAME_PEDIDO, $camposEValores);
 
         if (!$exclusaoTabelaPedidos) {
             return false;
