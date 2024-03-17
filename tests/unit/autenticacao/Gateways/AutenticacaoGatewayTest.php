@@ -6,13 +6,20 @@ use Autenticacao\Gateways\AutenticacaoGateway;
 class AutenticacaoGatewayTest extends TestCase
 {
     private $autenticacaoGateway;
+    private $cpf;
     protected function setUp(): void
     {
+        $this->cpf = "80621711080";
         $this->autenticacaoGateway = new AutenticacaoGateway();
     }
     public function testGerarTokenComSucesso()
     {
-        $resultado = $this->autenticacaoGateway->gerarToken('42157363823');
+        $this->autenticacaoGateway->excluirContaCognito($this->cpf);
+        $resultado = $this->autenticacaoGateway->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $resultadoArray = json_decode($resultado, true);
+        $usuarioCadastradoComSucesso = !empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso";
+        $this->assertTrue($usuarioCadastradoComSucesso);
+        $resultado = $this->autenticacaoGateway->gerarToken($this->cpf);
         $this->assertIsString($resultado);
         $this->assertNotEmpty($resultado);
         $this->assertTrue(strpos($resultado, "Bearer ") !== false);
@@ -27,16 +34,16 @@ class AutenticacaoGatewayTest extends TestCase
 
     public function testCriarContaCognitoComSucesso()
     {
-        $resultado = $this->autenticacaoGateway->criarContaCognito('42157363823', 'Carmo', 'rodrigocarmodev@gmail.com');
-        $resultadoArray = json_decode($resultado);
-        $usuarioCadastradoComSucesso = strpos($resultado, "User account already exists") || (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso");
+        $this->autenticacaoGateway->excluirContaCognito($this->cpf);
+        $resultado = $this->autenticacaoGateway->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $resultadoArray = json_decode($resultado, true);
+        $usuarioCadastradoComSucesso = !empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso";
         $this->assertTrue($usuarioCadastradoComSucesso);
     }
     public function testCriarContaCognitoComErro()
     {
-        $resultado = $this->autenticacaoGateway->criarContaCognito('42157363823', 'Carmo', 'rodrigocarmodev@gmail.com');
-        $resultadoArray = json_decode($resultado);
-        $usuarioCadastradoComSucesso = !empty($resultadoArray["status"]) && $resultadoArray["status"] != "usuario-criado-com-sucesso";
+        $resultado = $this->autenticacaoGateway->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $usuarioCadastradoComSucesso = !empty($resultado["status"]) && $resultado["status"] != "usuario-criado-com-sucesso";
         $this->assertFalse($usuarioCadastradoComSucesso);
     }
 }

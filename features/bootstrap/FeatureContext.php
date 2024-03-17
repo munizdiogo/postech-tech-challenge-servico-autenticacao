@@ -36,7 +36,7 @@ class FeatureContext extends TestCase implements Context
      */
     public function queEuInformeUmCpfValido()
     {
-        $this->cpf = "42157363823";
+        $this->cpf = "80621711080";
     }
 
     /**
@@ -44,7 +44,7 @@ class FeatureContext extends TestCase implements Context
      */
     public function euExecutarAFuncaoGerartokenComUmCpfValido()
     {
-        $this->resultado = $this->autenticacaoController->gerarToken('42157363823');
+        $this->resultado = $this->autenticacaoController->gerarToken('80621711080');
     }
 
     /**
@@ -82,9 +82,9 @@ class FeatureContext extends TestCase implements Context
      */
     public function queEuFornecaUmCpfNomeEEMailValidos()
     {
-        $this->cpf = "42157363823";
+        $this->cpf = "80621711080";
         $this->nome = "Rodrigo Carmo";
-        $this->email = "rodrigocarmodev@gmail.com";
+        $this->email = "usuario_teste@gmail.com";
     }
 
     /**
@@ -111,7 +111,7 @@ class FeatureContext extends TestCase implements Context
     public function euExecutarAFuncaoCriarcontacognitoSemFornecerUmCpf()
     {
         $this->nome = "Rodrigo Carmo";
-        $this->email = "rodrigocarmodev@gmail.com";
+        $this->email = "usuario_teste@gmail.com";
         try {
             $this->resultado = $this->autenticacaoController->criarContaCognito($this->cpf,  $this->nome, $this->email);
         } catch (Exception $e) {
@@ -125,7 +125,7 @@ class FeatureContext extends TestCase implements Context
      */
     public function queEuFornecaUmEMailInvalido()
     {
-        $this->cpf = "42157363823";
+        $this->cpf = "80621711080";
         $this->nome = "Rodrigo Carmo";
         $this->email = "3333";
     }
@@ -189,9 +189,9 @@ class FeatureContext extends TestCase implements Context
      */
     public function queEuFornecaUmCpfJaExistente()
     {
-        $this->cpf = "42157363823";
+        $this->cpf = "80621711080";
         $this->nome = "Rodrigo Carmo";
-        $this->email = "rodrigocarmodev@gmail.com";
+        $this->email = "usuario_teste@gmail.com";
     }
 
     /**
@@ -246,7 +246,7 @@ class FeatureContext extends TestCase implements Context
      */
     public function queEuNaoFornecaOEMail()
     {
-        $this->cpf = "42157363823";
+        $this->cpf = "80621711080";
         $this->nome = "Rodrigo Carmo";
         $this->email = "";
     }
@@ -278,8 +278,8 @@ class FeatureContext extends TestCase implements Context
      */
     public function queEuNaoFornecaONome()
     {
-        $this->cpf = "42157363823";
+        $this->cpf = "80621711080";
         $this->nome = "";
-        $this->email = "rodrigocarmodev@gmail.com";
+        $this->email = "usuario_teste@gmail.com";
     }
 }

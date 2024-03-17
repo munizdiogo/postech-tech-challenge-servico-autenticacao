@@ -8,13 +8,19 @@ use Autenticacao\Controllers\AutenticacaoController;
 class AutenticacaoControllerTest extends TestCase
 {
     private $autenticacaoController;
+    private $cpf;
     protected function setUp(): void
     {
         $this->autenticacaoController = new AutenticacaoController();
+        $this->cpf = "80621711080";
     }
     public function testGerarTokenComSucesso()
     {
-        $resultado = $this->autenticacaoController->gerarToken('42157363823');
+        $this->autenticacaoController->excluirContaCognitoSemRetorno($this->cpf);
+        $resultado = $this->autenticacaoController->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $usuarioCadastradoComSucesso = !empty($resultado["status"]) && $resultado["status"] == "usuario-criado-com-sucesso";
+        $this->assertTrue($usuarioCadastradoComSucesso);
+        $resultado = $this->autenticacaoController->gerarToken($this->cpf);
         $this->assertIsString($resultado);
         $this->assertNotEmpty($resultado);
     }
@@ -30,9 +36,9 @@ class AutenticacaoControllerTest extends TestCase
 
     public function testCriarContaCognitoComSucesso()
     {
-        $resultado = $this->autenticacaoController->criarContaCognito('42157363823', 'Carmo', 'rodrigocarmodev@gmail.com');
-        $resultadoArray = json_decode($resultado);
-        $usuarioCadastradoComSucesso = strpos($resultado, "User account already exists") || (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso");
+        $this->autenticacaoController->excluirContaCognitoSemRetorno($this->cpf);
+        $resultado = $this->autenticacaoController->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $usuarioCadastradoComSucesso =!empty($resultado["status"]) && $resultado["status"] == "usuario-criado-com-sucesso";
         $this->assertTrue($usuarioCadastradoComSucesso);
     }
 }
