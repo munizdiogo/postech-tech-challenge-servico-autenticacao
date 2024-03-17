@@ -99,7 +99,6 @@ class AutenticacaoGateway implements AutenticacaoGatewayInterface
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         http_response_code(200);
         return $response;

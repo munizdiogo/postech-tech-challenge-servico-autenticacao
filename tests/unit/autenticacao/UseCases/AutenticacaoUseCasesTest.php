@@ -14,10 +14,15 @@ class AutenticacaoUseCasesTest extends TestCase
     }
     public function testGerarTokenComSucesso()
     {
+        $this->autenticacaoUseCases->excluirContaCognitoSemRetorno($this->cpf);
+        $resultado = $this->autenticacaoUseCases->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $usuarioCadastradoComSucesso = !empty($resultado["status"]) && $resultado["status"] == "usuario-criado-com-sucesso";
+        $this->assertTrue($usuarioCadastradoComSucesso);
         $resultado = $this->autenticacaoUseCases->gerarToken($this->cpf);
         $this->assertIsString($resultado);
         $this->assertNotEmpty($resultado);
     }
+
     public function testGerarTokenComCPFNaoInformado()
     {
         try {
@@ -39,15 +44,15 @@ class AutenticacaoUseCasesTest extends TestCase
 
     public function testCriarContaCognitoComSucesso()
     {
-        $resultado = $this->autenticacaoUseCases->criarContaCognito($this->cpf, 'Carmo', 'rodrigocarmodev@gmail.com');
-        $resultadoArray = json_decode($resultado);
-        $usuarioCadastradoComSucesso = strpos($resultado, "User account already exists") || (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso");
+        $this->autenticacaoUseCases->excluirContaCognitoSemRetorno($this->cpf);
+        $resultado = $this->autenticacaoUseCases->criarContaCognito($this->cpf, 'Carmo', 'usuario_teste@gmail.com');
+        $usuarioCadastradoComSucesso = !empty($resultado["status"]) && $resultado["status"] == "usuario-criado-com-sucesso";
         $this->assertTrue($usuarioCadastradoComSucesso);
     }
     public function testCriarContaCognitoComCPFNaoInformado()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('', 'Carmo', 'rodrigocarmodev@gmail.com');
+            $this->autenticacaoUseCases->criarContaCognito('', 'Carmo', 'usuario_teste@gmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O CPF é obrigatório.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
@@ -56,7 +61,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComNomeNaoInformado()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito($this->cpf, '', 'rodrigocarmodev@gmail.com');
+            $this->autenticacaoUseCases->criarContaCognito($this->cpf, '', 'usuario_teste@gmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O nome é obrigatório.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());
@@ -74,7 +79,7 @@ class AutenticacaoUseCasesTest extends TestCase
     public function testCriarContaCognitoComCPFInvalido()
     {
         try {
-            $this->autenticacaoUseCases->criarContaCognito('1111', 'Carmo', 'rodrigocarmodev@gmail.com');
+            $this->autenticacaoUseCases->criarContaCognito('1111', 'Carmo', 'usuario_teste@gmail.com');
         } catch (Exception $e) {
             $this->assertEquals("O CPF informado é inválido.", $e->getMessage());
             $this->assertEquals(400, $e->getCode());

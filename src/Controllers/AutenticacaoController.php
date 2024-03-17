@@ -34,6 +34,11 @@ class AutenticacaoController implements AutenticacaoControllerInterface
         return $token;
     }
 
+    function excluirContaCognitoSemRetorno($cpf)
+    {
+        $this->autenticacaoUseCases->excluirContaCognitoSemRetorno($cpf);
+    }
+
     function criarContaBancoDeDados($dbConnection, $dados)
     {
         $autenticacaoGateway = new AutenticacaoGateway($dbConnection);

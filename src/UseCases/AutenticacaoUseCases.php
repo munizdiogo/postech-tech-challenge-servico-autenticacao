@@ -105,7 +105,7 @@ class AutenticacaoUseCases implements AutenticacaoUseCasesInterface
         $resultadoArray = json_decode($resultado, true);
 
         if (!empty($resultadoArray["status"]) && $resultadoArray["status"] == "usuario-criado-com-sucesso") {
-            return true;
+            return $resultadoArray;
         } else {
             throw new \Exception("Ocorreu um erro ao criar conta no Cognito.", 400);
         }
@@ -125,5 +125,10 @@ class AutenticacaoUseCases implements AutenticacaoUseCasesInterface
         } else {
             throw new \Exception("Ocorreu um erro ao excluir conta. Detalhes: " . $resultadoArray["status"]);
         }
+    }
+
+    public function excluirContaCognitoSemRetorno($cpf)
+    {
+        $this->autenticacaoGateway->excluirContaCognito($cpf);
     }
 }
